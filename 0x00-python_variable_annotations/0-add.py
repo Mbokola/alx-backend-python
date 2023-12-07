@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-""" This is module adds two floats """
+""" This module adds two floats """
 
 
 def add(a: float, b: float) -> float:
+    """ add two floats """
     return a + b
