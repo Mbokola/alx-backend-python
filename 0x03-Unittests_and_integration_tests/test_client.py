@@ -40,6 +40,33 @@ class TestGithubOrgClient(unittest.TestCase):
 
             obj = GithubOrgClient("google")
 
-            result = obj._public_repos_url.return_value
+            result = obj._public_repos_url()
 
             self.assertEqual(result, mocked_property)
+
+    @patch('client.get_json')
+    def test_public_repos(self, mock_get_json):
+        """ unit-test for GithubOrgClient.public_repos
+        """
+        expected_data = {"a": True, "b": False}
+        mock_get_json.return_value = expected_data
+
+        obj = GithubOrgClient("google")
+
+        result = obj.org
+
+        self.assertEqual(result, expected_data)
+        mock_get_json.assert_called_once_with("https://api.github.com/orgs/\
+google")
+
+        mocked_property = "Mocked value"
+
+        with patch('client.GithubOrgClient._public_repos_url') as mocked:
+            mocked.return_value = mocked_property
+
+            obj = GithubOrgClient("google")
+
+            result = obj._public_repos_url()
+
+            self.assertEqual(result, mocked_property)
+            mocked.assert_called_once()
